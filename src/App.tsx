@@ -7,8 +7,8 @@ import { useWindowSize } from './hooks/useWindowSize';
 
 export const App = () => {
     const [isResizeEvent, setIsResizeEvent] = useState<boolean>(true);
-    const { isDesktopResolutionMQ, isMobileResolutionMQ, rendersMQ } = useMediaQueriesSize();
-    const { isDesktopResolution, isMobileResolution, renders } = useWindowSize();
+    const { isDesktopResolutionMQ, rendersMQ } = useMediaQueriesSize();
+    const { windowSize } = useWindowSize();
     const message = !isResizeEvent ? 'Toogle to Resize Event' : 'Toogle to Match Media';
 
     return (
@@ -19,10 +19,10 @@ export const App = () => {
             >
                 {message}
             </button>
-            {isResizeEvent && isMobileResolution && <Mobile renders={renders} />}
-            {isResizeEvent && isDesktopResolution && <Desktop renders={renders} />}
+            {isResizeEvent && !windowSize.isDesktopResolution && <Mobile renders={windowSize.renders} />}
+            {isResizeEvent && windowSize.isDesktopResolution && <Desktop renders={windowSize.renders} />}
             {!isResizeEvent && isDesktopResolutionMQ && <Desktop renders={rendersMQ} />}
-            {!isResizeEvent && isMobileResolutionMQ && <Mobile renders={rendersMQ} />}
+            {!isResizeEvent && !isDesktopResolutionMQ && <Mobile renders={rendersMQ} />}
         </div>
     );
 };
